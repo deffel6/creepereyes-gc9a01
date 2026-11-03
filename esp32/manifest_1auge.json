@@ -1,0 +1,16 @@
+{
+  "name": "CreeperEyes GC9A01 (ESP32, 1 Display)",
+  "version": "1.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "firmware/bootloader.bin",  "offset": 4096 },
+        { "path": "firmware/partitions.bin",  "offset": 32768 },
+        { "path": "firmware/boot_app0.bin",   "offset": 57344 },
+        { "path": "firmware/creepereyes_gc9a01_1auge.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}

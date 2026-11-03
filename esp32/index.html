@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CreeperEyes rund (ESP32) Installer</title>
+<script type="module" src="https://unpkg.com/esp-web-tools@10.1.0/dist/web/install-button.js?module"></script>
+<style>
+  :root {
+    --bg: #f6f4ef; --fg: #1d1d1b; --muted: #5d5b55; --card: #ffffff;
+    --line: #dedbd2; --accent: #2f7d32; --accent-fg: #ffffff; --code: #efece4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141513; --fg: #ecebe6; --muted: #a3a19a; --card: #1e1f1c;
+      --line: #34352f; --accent: #66bb6a; --accent-fg: #0d1a0e; --code: #262722;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2 { font-size: 19px; margin: 36px 0 10px; }
+  p.lead { color: var(--muted); margin: 0 0 28px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+  }
+  esp-web-install-button button[slot="activate"] {
+    background: var(--accent); color: var(--accent-fg); border: 0; border-radius: 10px;
+    padding: 12px 20px; font-size: 16px; font-weight: 650; cursor: pointer;
+  }
+  .hint { color: var(--muted); font-size: 14px; margin: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+  td code, p code { background: var(--code); padding: 1px 6px; border-radius: 5px; font-size: 14px; }
+  ol { padding-left: 20px; } li { margin: 4px 0; }
+  .wrap { overflow-x: auto; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>👀 CreeperEyes · rund (ESP32)</h1>
+  <p class="lead">Animierte „Uncanny Eyes“ auf runden GC9A01-Displays (240×240) mit einem klassischen ESP32 – direkt aus dem Browser flashen. Gleiche Pins wie beim SSD1351-Installer.</p>
+
+  <div class="card">
+    <esp-web-install-button manifest="manifest_1auge.json">
+      <button slot="activate">Installieren – 1 Display</button>
+      <span slot="unsupported">Dein Browser kann nicht flashen. Bitte <b>Chrome</b> oder <b>Edge</b> am Computer verwenden.</span>
+      <span slot="not-allowed">Flashen geht nur über eine HTTPS-Seite (oder localhost).</span>
+    </esp-web-install-button>
+    <esp-web-install-button manifest="manifest_2augen.json">
+      <button slot="activate">Installieren – 2 Displays</button>
+      <span slot="unsupported">Dein Browser kann nicht flashen. Bitte <b>Chrome</b> oder <b>Edge</b> am Computer verwenden.</span>
+      <span slot="not-allowed">Flashen geht nur über eine HTTPS-Seite (oder localhost).</span>
+    </esp-web-install-button>
+    <p class="hint">ESP32 per USB anschließen, Knopf drücken, Port wählen. Falls keine Verbindung zustande kommt: <b>BOOT</b>-Taste am ESP32 gedrückt halten, während du auf „Verbinden“ klickst. Mit nur einem Display die Variante „1 Display“ nehmen, dann läuft es doppelt so flüssig.</p>
+  </div>
+
+  <h2>Verdrahtung</h2>
+  <div class="wrap">
+  <table>
+    <thead><tr><th>GC9A01</th><th>Linkes Auge</th><th>Rechtes Auge</th></tr></thead>
+    <tbody>
+      <tr><td>VCC / GND</td><td colspan="2">3V3 / GND (beide)</td></tr>
+      <tr><td>SCL</td><td colspan="2"><code>GPIO 18</code> (beide)</td></tr>
+      <tr><td>SDA</td><td colspan="2"><code>GPIO 23</code> (beide)</td></tr>
+      <tr><td>DC</td><td colspan="2"><code>GPIO 16</code> (beide)</td></tr>
+      <tr><td>RES</td><td colspan="2"><code>GPIO 5</code> (beide)</td></tr>
+      <tr><td>BLK</td><td colspan="2">an 3V3 (nur falls das Modul einen BLK-Pin hat)</td></tr>
+      <tr><td>CS</td><td><code>GPIO 17</code></td><td><code>GPIO 4</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Wichtig</h2>
+  <p>Diese Firmware ist <b>nur für runde GC9A01-Displays</b>. Für eckige 128×128-OLEDs (SSD1351) gibt es den <a href="https://deffel6.github.io/creepereyes-webinstaller/">anderen CreeperEyes-Installer</a>; auf einem GC9A01 zeigt der nur Flackern. Für den <b>ESP32-C3 Super Mini</b> gibt es <a href="../">einen eigenen Installer</a> mit anderen Pins.</p>
+
+  <h2>Was die Firmware macht</h2>
+  <ol>
+    <li>Augen schauen zufällig umher, das Oberlid folgt der Pupille.</li>
+    <li>Automatisches Blinzeln, die Pupille ändert ständig leicht ihre Größe.</li>
+    <li>Das Auge wird auf das runde 240×240-Display vergrößert; SPI-Takt 27 MHz.</li>
+  </ol>
+
+  <footer>
+    Portierung von <a href="https://github.com/tooluser/CreeperEyes">tooluser/CreeperEyes</a> auf GC9A01 mit LovyanGFX (aus dem ESP32-C3-Port abgeleitet),
+    gebaut mit Arduino-ESP32 3.3. Basierend auf Adafruit „Uncanny Eyes“ von Phil Burgess (MIT) und der Anpassung von Laurent Moll.
+  </footer>
+</main>
+</body>
+</html>
